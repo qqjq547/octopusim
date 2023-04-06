@@ -70,7 +70,7 @@ dependencies {
     // luban
     api 'top.zibin:Luban-turbo:1.0.0'
     // umeng
-    api 'com.umeng.umsdk:common:9.4.7'// 必选
+    api 'com.umeng.umsdk:common:9.5.4'// 必选
     api 'com.umeng.umsdk:asms:1.4.1'// 必选
     api 'com.umeng.umsdk:apm:1.5.2'
     // aliyun oss
@@ -84,8 +84,6 @@ dependencies {
     // TinyPinyin
     api 'com.github.promeg:tinypinyin:2.0.3'
     api 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
-    // x5内核
-    api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
 
     //高德地图
     api files('libs/AMap3DMap_4.1.3_AMapSearch_3.6.1_AMapLocation_3.2.1_20161228.jar')
@@ -97,8 +95,8 @@ dependencies {
     api 'org.whispersystems:curve25519-android:0.2.5'
 
 
-    api 'com.squareup.leakcanary:leakcanary-android:1.6.2'
-    api 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.2'
+    //api 'com.squareup.leakcanary:leakcanary-android:2.10'
+    //api 'com.squareup.leakcanary:leakcanary-support-fragment:2.10'
 
     //https://github.com/Bigkoo/Android-PickerView
     api 'com.contrarywind:Android-PickerView:4.1.9'

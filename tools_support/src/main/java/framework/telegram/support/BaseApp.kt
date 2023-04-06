@@ -5,15 +5,16 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager.NameNotFoundException
 import android.content.res.Configuration
 import androidx.multidex.MultiDexApplication
-import com.squareup.leakcanary.RefWatcher
+
 import framework.telegram.support.BuildConfig.IS_JENKINS
 import framework.telegram.support.BuildConfig.JENKINS_IS_TEST_SERVER
 import framework.telegram.support.tools.language.LocalManageUtil
 import framework.telegram.support.tools.language.MultiLanguage
+//import leakcanary.AppWatcher
 
 open class BaseApp : MultiDexApplication() {
 
-    var refWatcher: RefWatcher? = null
+    //var refWatcher: AppWatcher? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -65,7 +66,7 @@ open class BaseApp : MultiDexApplication() {
          */
         var VERSION_NAME: String = ""
 
-        var HTTP_VERSION_NAME: String = "4.0.0"
+        var HTTP_VERSION_NAME: String = "4.0.4"
 
         /**
          * 应用版本号

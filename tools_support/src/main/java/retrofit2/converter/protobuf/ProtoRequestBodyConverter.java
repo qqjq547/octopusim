@@ -15,6 +15,8 @@
  */
 package retrofit2.converter.protobuf;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
@@ -22,6 +24,7 @@ import framework.telegram.support.BaseApp;
 import framework.telegram.support.system.network.http.HttpReq;
 import framework.telegram.support.tools.BitUtils;
 import framework.telegram.support.tools.Helper;
+import framework.telegram.support.tools.StringUtils;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;
@@ -50,6 +53,7 @@ final class ProtoRequestBodyConverter implements Converter<HttpReq, RequestBody>
         ByteBuffer contentBuffer = null;
         byte[] content = value.getData().toByteArray();
         if (content != null) {
+            Log.e("HttpLogInfo", value.getData().toString());
             content = NativeLibUtil.getInstance().sign1(BaseApp.app, BaseApp.Companion.getIS_TEST_SERVER(), content, 1);
 //            content = ZipUtils.gZip(content);
             contentBuffer = ByteBuffer.allocate(2 + 4 + content.length);

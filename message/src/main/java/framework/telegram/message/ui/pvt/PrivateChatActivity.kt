@@ -68,9 +68,6 @@ import framework.telegram.message.http.protocol.UserHttpProtocol
 import framework.telegram.message.manager.*
 import framework.telegram.message.ui.AndroidBug5497Workaround
 import framework.telegram.message.ui.adapter.MessageAdapter
-import framework.telegram.message.ui.location.ChoiceLocationActivity
-import framework.telegram.message.ui.location.bean.LocationBean
-import framework.telegram.message.ui.location.bean.POIBean
 import framework.telegram.message.ui.telephone.core.RtcEngineHolder
 import framework.telegram.message.ui.widget.MessageInputView
 import framework.telegram.support.BaseActivity
@@ -589,6 +586,11 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
 
             override fun onRecordingCanceled() {
 
+
+
+
+
+
             }
 
             override fun onRecordSoShort() {
@@ -766,14 +768,14 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
                                 .withLong("fileSize", data.fileMessageContentBean.size).navigation()
                         }
                         MessageModel.MESSAGE_TYPE_LOCATION -> {
-                            val location = data.locationMessageContentBean
+                           /* val location = data.locationMessageContentBean
                             val locationBean = LocationBean()
                             locationBean.lat = (location.lat / 1000000.0f).toDouble()
                             locationBean.lng = (location.lng / 1000000.0f).toDouble()
                             locationBean.address = location.address
                             ARouter.getInstance()
                                 .build(Constant.ARouter.ROUNTE_LOCATION_SHOW_ACTIVITY)
-                                .withSerializable("location", locationBean).navigation()
+                                .withSerializable("location", locationBean).navigation()*/
                         }
                         MessageModel.MESSAGE_TYPE_UNDECRYPT -> {
                             AppDialog.show(this@PrivateChatActivity, this@PrivateChatActivity) {
@@ -1988,7 +1990,7 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
         }
 
         //位置
-        if (requestCode == ChoiceLocationActivity.REQUEST_CODE_SEND_LOCATION && resultCode == Activity.RESULT_OK && data != null) {
+       /* if (requestCode == ChoiceLocationActivity.REQUEST_CODE_SEND_LOCATION && resultCode == Activity.RESULT_OK && data != null) {
             val poiBean = data.getSerializableExtra("data") as POIBean?
             poiBean?.let {
                 mPresenter?.sendLocationMessage(
@@ -2002,7 +2004,7 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
                 )
                 clearRefMessage()
             }
-        }
+        }*/
     }
 
     override fun onResume() {
@@ -2372,12 +2374,12 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
                     }
                     3 -> {
                         //位置
-                        ARouter.getInstance()
+                        /*ARouter.getInstance()
                             .build(Constant.ARouter.ROUNTE_LOCATION_CHOICE_ACTIVITY)
                             .navigation(
                                 this@PrivateChatActivity,
                                 ChoiceLocationActivity.REQUEST_CODE_SEND_LOCATION
-                            )
+                            )*/
                     }
                     4 -> {
                         //文件

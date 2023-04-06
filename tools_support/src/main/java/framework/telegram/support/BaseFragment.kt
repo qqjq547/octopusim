@@ -95,9 +95,9 @@ abstract class BaseFragment : Fragment(), LifecycleProvider<FragmentEvent> {
     override fun onDestroy() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY)
         super.onDestroy()
-        if (!BaseApp.IS_JENKINS_BUILD){
+        /*if (!BaseApp.IS_JENKINS_BUILD){
             BaseApp.app.refWatcher?.watch(this)
-        }
+        }*/
     }
 
     @CallSuper

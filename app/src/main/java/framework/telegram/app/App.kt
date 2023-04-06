@@ -11,6 +11,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.annotation.RequiresApi
 import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
@@ -23,8 +24,8 @@ import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFact
 import com.fm.openinstall.OpenInstall
 import com.manusunny.pinlock.PinCodeUnlock
 import com.meituan.android.walle.WalleChannelReader
-import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher
+/*import com.squareup.leakcanary.LeakCanary
+import com.squareup.leakcanary.RefWatcher*/
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 import de.greenrobot.common.Base64
@@ -53,9 +54,6 @@ import framework.telegram.message.bridge.event.NotificationEvent
 import framework.telegram.message.connect.MessageSocketService
 import framework.telegram.message.manager.ReceiveMessageManager
 import framework.telegram.message.manager.SoundPoolManager
-import framework.telegram.message.ui.location.ClientLocationManager
-import framework.telegram.message.ui.location.bean.ClientLatLng
-import framework.telegram.message.ui.location.bean.ClientLocation
 import framework.telegram.message.ui.telephone.core.RtcEngineHolder
 import framework.telegram.support.BaseApp
 import framework.telegram.support.ChannelInfoBean
@@ -461,6 +459,7 @@ class App : BaseApp() {
                     ActivitiesHelper.getInstance().addActivity(activity)
                 }
 
+                @RequiresApi(Build.VERSION_CODES.M)
                 override fun onActivityStarted(activity: Activity) {
                     ActivitiesHelper.getInstance().addActivityCount()
                     if (ActivitiesHelper.getInstance().toForeground()) {
@@ -564,6 +563,7 @@ class App : BaseApp() {
             }
         }
 
+        @RequiresApi(Build.VERSION_CODES.M)
         private fun checkAppLock(activity: Activity, commonPref: CommonPref) {
             val userId = AccountManager.getLoginAccount(AccountInfo::class.java).getUserId()
             val userIcon = AccountManager.getLoginAccount(AccountInfo::class.java).getAvatar()
@@ -625,7 +625,7 @@ class App : BaseApp() {
     }
 
     private fun initLeakCanary() {
-        if (IS_JENKINS_BUILD)
+        /*if (IS_JENKINS_BUILD)
             return
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -633,46 +633,13 @@ class App : BaseApp() {
             // You should not init your app in this process.
             refWatcher = RefWatcher.DISABLED
         }
-        refWatcher = LeakCanary.install(this)
+        refWatcher = LeakCanary.install(this)*/
     }
 
-    private fun requestLocation() {
-        val clientLocationManager =
-            ClientLocationManager(this, object : ClientLocationManager.ClientLocationListener {
 
-                override fun onSuccess(
-                    clientLocationManager: ClientLocationManager,
-                    clientLatLng: ClientLatLng?
-                ) {
-                }
-
-                override fun onSuccess(
-                    clientLocationManager: ClientLocationManager,
-                    clientLocation: ClientLocation?
-                ) {
-                }
-
-                override fun onError(
-                    clientLocationManager: ClientLocationManager,
-                    e: ClientException
-                ) {
-                    MobclickAgent.reportError(this@App, e)
-                }
-            })
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                clientLocationManager.requestLocationAndAddress(false)
-            }
-        } else {
-            clientLocationManager.requestLocationAndAddress(false)
-        }
-    }
 
     private fun initThread() {
         ThreadUtils.runOnIOThread {
-            requestLocation()
-
             //处理快速重复点击（替换view的点击事件）
             ViewDoubleHelper.init(this, 500, UnifiedDoubleClick::class.java) //默认时间：1秒
         }

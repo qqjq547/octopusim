@@ -15,6 +15,8 @@
  */
 package retrofit2.converter.protobuf;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.google.protobuf.ExtensionRegistryLite;
@@ -49,7 +51,8 @@ public final class ProtoResponseBodyConverter<T extends MessageLite>
             byte[] contentBuffer = parseRespBytes(data);
             if (contentBuffer != null) {
                 T result = registry == null ? parser.parseFrom(contentBuffer) : parser.parseFrom(contentBuffer, registry);
-                AppLogcat.INSTANCE.getLogger().d("HttpResp", result.toString());
+                //AppLogcat.INSTANCE.getLogger().d("HttpResp", result.toString());
+                Log.e("HttpLogInfo", result.toString());
                 return result;
             } else {
                 throw new RuntimeException();

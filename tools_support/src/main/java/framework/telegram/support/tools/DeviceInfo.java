@@ -1085,7 +1085,7 @@ public class DeviceInfo {
         }
     }
 
-    public String getPhoneNo() {
+   /* public String getPhoneNo() {
         String result = this.initialVal;
 
         try {
@@ -1104,7 +1104,7 @@ public class DeviceInfo {
         }
 
         return result;
-    }
+    }*/
 
     public String getProduct() {
         String result = this.initialVal;

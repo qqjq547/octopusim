@@ -33,6 +33,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.logging.Level
+import framework.telegram.support.system.network.http.HttpLogger
+
+import okhttp3.logging.HttpLoggingInterceptor
+
+
+
 
 
 /**
@@ -41,17 +47,22 @@ import java.util.logging.Level
  */
 object HttpManager {
 
-    private val defaultLoggingInterceptor: framework.telegram.support.system.network.http.log.LoggingInterceptor by lazy {
+   /* private val defaultLoggingInterceptor: framework.telegram.support.system.network.http.log.LoggingInterceptor by lazy {
         framework.telegram.support.system.network.http.log.LoggingInterceptor.Builder()
                 .loggable(BuildConfig.DEBUG)
-                .setLevel(framework.telegram.support.system.network.http.log.Level.HEADERS)
+                .setLevel(framework.telegram.support.system.network.http.log.Level.BASIC)
                 .request("Request")
                 .response("Response")
                 .logger { _, tag, msg ->
-                    RLogManager.w(tag, msg)
+                    RLogManager.e(tag, msg)
                 }
                 .addHeader("versionName", BaseApp.VERSION_NAME)
                 .addHeader("versionCode", BaseApp.VERSION_CODE.toString()).build()
+    }*/
+
+
+    private var logInterceptor = HttpLoggingInterceptor(HttpLogger()).apply {
+        level =  HttpLoggingInterceptor.Level.BODY
     }
 
     private var backupLoginHostInterceptor = BackupLoginHostInterceptor()
@@ -78,9 +89,9 @@ object HttpManager {
         }
     }) {}
 
-    private val loginHttpProtocol by lazy { HttpProtocolCreater.createProtoBufProtocol(framework.telegram.message.bridge.Constant.Common.LOGIN_HTTP_HOST, LoginHttpProtocol::class.java, backupLoginHostInterceptor, defaultLoggingInterceptor) }
-    private val friendHttpProtocol by lazy { HttpProtocolCreater.createProtoBufProtocol(Constant.Common.BIZ_HTTP_CONTACT, FriendHttpProtocol::class.java, backupLoginHostInterceptor, defaultLoggingInterceptor) }
-    private val groupHttpProtocol by lazy { HttpProtocolCreater.createProtoBufProtocol(Constant.Common.BIZ_HTTP_GROUP, GroupHttpProtocol::class.java, backupLoginHostInterceptor, defaultLoggingInterceptor) }
+    private val loginHttpProtocol by lazy { HttpProtocolCreater.createProtoBufProtocol(framework.telegram.message.bridge.Constant.Common.LOGIN_HTTP_HOST, LoginHttpProtocol::class.java, backupLoginHostInterceptor, logInterceptor) }
+    private val friendHttpProtocol by lazy { HttpProtocolCreater.createProtoBufProtocol(Constant.Common.BIZ_HTTP_CONTACT, FriendHttpProtocol::class.java, backupLoginHostInterceptor, logInterceptor) }
+    private val groupHttpProtocol by lazy { HttpProtocolCreater.createProtoBufProtocol(Constant.Common.BIZ_HTTP_GROUP, GroupHttpProtocol::class.java, backupLoginHostInterceptor, logInterceptor) }
 
     private val otherHttpProtocolCache by lazy { HashMap<String, Any?>() }
 
@@ -98,7 +109,7 @@ object HttpManager {
             }
             else -> {
                 if (!otherHttpProtocolCache.containsKey(httpStoreClazz.name)) {
-                    val protocol = HttpProtocolCreater.createProtoBufProtocol(framework.telegram.message.bridge.Constant.Common.BIZ_HTTP_HOST, httpStoreClazz, backupBizHostInterceptor, defaultLoggingInterceptor)
+                    val protocol = HttpProtocolCreater.createProtoBufProtocol(framework.telegram.message.bridge.Constant.Common.BIZ_HTTP_HOST, httpStoreClazz, backupBizHostInterceptor, logInterceptor)
                     otherHttpProtocolCache[httpStoreClazz.name] = protocol
                 }
 

@@ -49,8 +49,7 @@ import framework.telegram.message.http.creator.UserHttpReqCreator
 import framework.telegram.message.http.getResultWithCache
 import framework.telegram.message.http.protocol.UserHttpProtocol
 import framework.telegram.message.ui.AndroidBug5497Workaround
-import framework.telegram.message.ui.location.ChoiceLocationActivity
-import framework.telegram.message.ui.location.bean.POIBean
+
 import framework.telegram.message.ui.telephone.core.RtcEngineHolder
 import framework.telegram.message.ui.widget.MessageInputView
 import framework.telegram.support.BaseActivity
@@ -402,12 +401,12 @@ class GroupSendChatActivity : BaseActivity(), GroupSendChatContract.View,
         }
 
         //位置
-        if (requestCode == ChoiceLocationActivity.REQUEST_CODE_SEND_LOCATION && resultCode == Activity.RESULT_OK && data != null) {
+       /* if (requestCode == ChoiceLocationActivity.REQUEST_CODE_SEND_LOCATION && resultCode == Activity.RESULT_OK && data != null) {
             val poiBean = data.getSerializableExtra("data") as POIBean?
             poiBean?.let {
                 mPresenter?.sendLocationMessage(poiBean.lat, poiBean.lng, poiBean.name)
             }
-        }
+        }*/
     }
 
     override fun onResume() {
