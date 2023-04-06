@@ -62,16 +62,16 @@ android {
             minifyEnabled false //是否开启混淆
             debuggable true
 
-           // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             signingConfig signingConfigs.release
             buildConfigField "boolean", "LOG_DEBUG", "true"// 不显示Log
             zipAlignEnabled true
-            minifyEnabled false //是否开启混淆
+            minifyEnabled true //是否开启混淆
             debuggable false
 
-           // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
