@@ -67,8 +67,8 @@ android {
         release {
             signingConfig signingConfigs.release
             buildConfigField "boolean", "LOG_DEBUG", "true"// 不显示Log
-            zipAlignEnabled true
-            minifyEnabled true //是否开启混淆
+            zipAlignEnabled false
+            minifyEnabled false //是否开启混淆
             debuggable false
 
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

@@ -114,7 +114,12 @@ public enum MimeType {
     public static Set<MimeType> ofVideo() {
         return EnumSet.of(MPEG, MP4, QUICKTIME, THREEGPP, THREEGPP2, MKV, WEBM, TS, AVI);
     }
-
+    public static Set<MimeType> ofImage(boolean onlyGif) {
+        return EnumSet.of(GIF);
+    }
+    public static Set<MimeType> ofGif() {
+        return ofImage(true);
+    }
     public static boolean isImage(String mimeType) {
         if (mimeType == null) return false;
         return mimeType.startsWith("image");

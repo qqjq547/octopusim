@@ -797,6 +797,7 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
             data?.let {
                 // 文本消息
                 if (view is SelectableTextView) {
+                    Log.d("hjq","00")
                     view.operationItemList = initOperItemList(it, false)
                     if (it.snapchatTime > 0) {
                         showSelectableText(view)

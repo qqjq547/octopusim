@@ -49,6 +49,7 @@
         android:supportsRtl="false"
         android:theme="@style/CustomPageTheme"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup,android:supportsRtl,label">
 
         <!--保活相关代码   downloadStart -->
