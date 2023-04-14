@@ -33,3 +33,4 @@
 
 注意：打包的key和对应密码等信息，都写在app下的build.gradle文件中
 注意：app根目录下的qchat.jks和debug.keystore文件不可替换，不可修改，不可删除，必须用这两个keysotre进行打包，否则服务器通讯将会失败
+//
