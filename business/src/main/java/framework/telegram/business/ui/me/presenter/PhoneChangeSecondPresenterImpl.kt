@@ -1,6 +1,7 @@
 package framework.telegram.business.ui.me.presenter
 
 import android.content.Context
+import android.widget.Toast
 import com.im.domain.pb.CommonProto
 import com.im.domain.pb.SysProto
 import com.im.domain.pb.UserProto
@@ -13,6 +14,7 @@ import framework.telegram.business.http.getResult
 import framework.telegram.business.http.protocol.LoginHttpProtocol
 import framework.telegram.business.http.protocol.SystemHttpProtocol
 import framework.telegram.business.http.protocol.UserHttpProtocol
+import framework.telegram.business.utils.CpuUtils
 import framework.telegram.support.system.network.http.HttpReq
 import io.reactivex.Observable
 
@@ -35,6 +37,14 @@ class PhoneChangeSecondPresenterImpl : PhoneChangeSecondContract.Presenter {
     }
 
     override fun sendCode(phone: String, countryCode: String) {
+
+        if(CpuUtils.checkIfCPUx86()) {
+
+            Toast.makeText(mContext, mContext.getText(R.string.emulator_forbidden_get_SMS_verification_code), Toast.LENGTH_SHORT).show()
+
+            return
+        }
+
         HttpManager.getStore(LoginHttpProtocol::class.java)
                 .getSmsCode(object : HttpReq<SysProto.GetSmsCodeReq>() {
                     override fun getData(): SysProto.GetSmsCodeReq {

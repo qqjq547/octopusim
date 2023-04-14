@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
@@ -37,7 +38,12 @@ import framework.telegram.ui.dialog.AppDialog
 import framework.telegram.ui.utils.KeyboardktUtils
 import framework.telegram.ui.utils.NavBarUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.bus_login_activity_first.*
 import kotlinx.android.synthetic.main.bus_login_activity_register.*
+import kotlinx.android.synthetic.main.bus_login_activity_register.custom_toolbar
+import kotlinx.android.synthetic.main.bus_login_activity_register.edit_text_phone
+import kotlinx.android.synthetic.main.bus_login_activity_register.linear_layout_all
+import kotlinx.android.synthetic.main.bus_login_activity_register.text_view_country_code
 
 /**
  * Created by lzh on 19-5-16.
@@ -254,6 +260,9 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
         if (!TextUtils.isEmpty(str)) {
             toast(str.toString())
         }
+
+        startGetSmsCodeCountDown(time)
+
         ARouter.getInstance().build(Constant.ARouter.ROUNTE_BUS_LOGIN_GET_SMS_CODE)
             .withString("countryCode", mCountyStr)
             .withString("phone", edit_text_phone.text.trim().toString())
@@ -280,14 +289,17 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
     }
 
     private fun setRegisterBtn() {
-        if (mPasswordOK) {
-            text_view_register.isEnabled = true
-            text_view_register.background =
-                getSimpleDrawable(R.drawable.common_corners_trans_178aff_6_0)
-        } else {
-            text_view_register.isEnabled = false
-            text_view_register.background =
-                getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
+
+        if(isDuringCountDown.not()){
+            if (mPasswordOK) {
+                text_view_register.isEnabled = true
+                text_view_register.background =
+                    getSimpleDrawable(R.drawable.common_corners_trans_178aff_6_0)
+            } else {
+                text_view_register.isEnabled = false
+                text_view_register.background =
+                    getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
+            }
         }
     }
 
@@ -301,4 +313,54 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
             }
         }
     }
+
+
+    private var countDownTimer: CountDownTimer? = null
+
+    private var isDuringCountDown = false
+
+    private fun startGetSmsCodeCountDown(totalTimeSecond: Int) {
+
+        isDuringCountDown = true
+
+        text_view_register.isEnabled = false
+        text_view_register.background =
+            getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
+        text_view_register.text = getString(R.string.count_down) + totalTimeSecond + "s"
+
+
+        countDownTimer = object : CountDownTimer(totalTimeSecond * 1000L, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+
+                text_view_register.text =
+                    getString(R.string.count_down) + millisUntilFinished / 1000 % 60 + "s"
+            }
+
+            override fun onFinish() {
+
+                text_view_register.text = getString(R.string.bus_get_sms_code)
+
+                setRegisterBtn()
+
+                countDownTimer = null
+
+                isDuringCountDown = false
+            }
+        }.start()
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        countDownTimer?.let {
+
+            it.cancel()
+
+            countDownTimer= null
+        }
+    }
+
 }

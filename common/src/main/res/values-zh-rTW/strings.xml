@@ -904,5 +904,9 @@
     <string name="brvah_load_end">沒有更多數據</string>
     <string name="brvah_load_failed">加載失敗，請點我重試</string>
     <string name="brvah_loading">正在加載中…</string>
+
+    <string name="count_down">倒計時:</string>
+    <string name="emulator_forbidden_get_SMS_verification_code">模擬器禁止獲取短信驗證碼</string>
+
 </resources>
 

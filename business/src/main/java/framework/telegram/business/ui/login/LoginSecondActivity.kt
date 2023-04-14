@@ -3,6 +3,7 @@ package framework.telegram.business.ui.login
 import android.Manifest
 import android.content.Intent
 import android.graphics.Rect
+import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -30,7 +31,14 @@ import framework.telegram.support.tools.permission.annotation.OnMPermissionNever
 import framework.telegram.ui.dialog.AppDialog
 import framework.telegram.ui.utils.KeyboardktUtils
 import framework.telegram.ui.utils.NavBarUtils
+import kotlinx.android.synthetic.main.bus_login_activity_first.*
 import kotlinx.android.synthetic.main.bus_login_activity_second.*
+import kotlinx.android.synthetic.main.bus_login_activity_second.custom_toolbar
+import kotlinx.android.synthetic.main.bus_login_activity_second.eet
+import kotlinx.android.synthetic.main.bus_login_activity_second.image_view_user
+import kotlinx.android.synthetic.main.bus_login_activity_second.linear_layout_all
+import kotlinx.android.synthetic.main.bus_login_activity_second.text_view_change
+import kotlinx.android.synthetic.main.bus_login_activity_second.text_view_login
 
 /**
  * Created by lzh on 19-5-16.
@@ -69,14 +77,14 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
 
     /******************权限*****************/
     private val BASIC_PERMISSIONS = arrayOf<String>(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE)
 
     private fun requestBasicPermission() {
         MPermission.with(this@LoginSecondActivity)
-                .setRequestCode(Constant.Permission.BASIC_PERMISSION_REQUEST_CODE)
-                .permissions(*BASIC_PERMISSIONS)
-                .request()
+            .setRequestCode(Constant.Permission.BASIC_PERMISSION_REQUEST_CODE)
+            .permissions(*BASIC_PERMISSIONS)
+            .request()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -157,16 +165,16 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
             AppDialog.showBottomListView(this@LoginSecondActivity, this@LoginSecondActivity, data) { _, index, _ ->
                 if (index == 0) {
                     ARouter.getInstance().build(Constant.ARouter.ROUNTE_BUS_LOGIN_FIRST)
-                            .withBoolean("isCancel", true)
-                            .withString("area_code", accountInfo.getCountryCode())
-                            .navigation()
+                        .withBoolean("isCancel", true)
+                        .withString("area_code", accountInfo.getCountryCode())
+                        .navigation()
                 } else if (index == 1) {
                     ARouter.getInstance().build(Constant.ARouter.ROUNTE_BUS_LOGIN_REGISTER)
-                            .withString("area_code", accountInfo.getCountryCode())
-                            .navigation()
+                        .withString("area_code", accountInfo.getCountryCode())
+                        .navigation()
                 } else if (index == 2) {
                     ARouter.getInstance().build(Constant.ARouter.ROUNTE_BUS_ME_FIND_PASSWORD_FIRST)
-                            .navigation()
+                        .navigation()
                 }
             }
         }
@@ -214,12 +222,15 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
         if (!TextUtils.isEmpty(str)) {
             toast(str.toString())
         }
+
+        startGetSmsCodeCountDown(time)
+
         ARouter.getInstance().build(Constant.ARouter.ROUNTE_BUS_LOGIN_GET_SMS_CODE)
-                .withString("countryCode", accountInfo.getCountryCode())
-                .withString("phone", accountInfo.getPhone())
-                .withInt(GET_SMSCODE_DATA_TIME, time)
-                .withInt("smsType", 0)
-                .navigation(this@LoginSecondActivity, GET_SMSCODE_RESULT)
+            .withString("countryCode", accountInfo.getCountryCode())
+            .withString("phone", accountInfo.getPhone())
+            .withInt(GET_SMSCODE_DATA_TIME, time)
+            .withInt("smsType", 0)
+            .navigation(this@LoginSecondActivity, GET_SMSCODE_RESULT)
     }
 
     override fun showErrMsg(str: String?, showDialog: Boolean) {
@@ -246,8 +257,12 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
         } else {
             eet.visibility = View.GONE
             text_view_change.text = getString(R.string.bus_login_password_login)
-            text_view_login.text = getString(R.string.bus_get_sms_code)
-            setLoginBtn(true)
+            if(isDuringCountDown){
+                text_view_login.text = countDownText
+            }else{
+                text_view_login.text = getString(R.string.bus_get_sms_code)
+            }
+            setLoginBtn(isDuringCountDown.not())
         }
     }
 
@@ -285,6 +300,13 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
     override fun onDestroy() {
         super.onDestroy()
         mUpdatePresenterImpl?.cancel()
+
+        countDownTimer?.let {
+
+            it.cancel()
+
+            countDownTimer= null
+        }
     }
 
     override fun registerSuccess(str: String?) {
@@ -303,4 +325,53 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
             }
         }
     }
+
+
+    private var isDuringCountDown = false
+    private var countDownText = ""
+    private var countDownTimer: CountDownTimer? = null
+
+    private fun startGetSmsCodeCountDown(totalTimeSecond: Int){
+
+        isDuringCountDown = true
+
+        text_view_login.isEnabled = false
+        text_view_login.background = getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
+
+        countDownText = getString(R.string.count_down) + ":" + totalTimeSecond + "S"
+
+        text_view_login.text = countDownText
+
+
+        countDownTimer = object : CountDownTimer(totalTimeSecond * 1000L,1000){
+
+            override fun onTick(millisUntilFinished: Long) {
+
+                countDownText = getString(R.string.count_down) + ":" + millisUntilFinished/1000%60 + "S"
+
+                if(mType == 1){
+                    text_view_login.text = countDownText
+                }
+
+            }
+
+            override fun onFinish() {
+
+
+
+                if(mType == 1){
+                    text_view_login.text = getString(R.string.bus_get_sms_code)
+                }
+
+                setLoginBtn(isDuringCountDown.not())
+
+                isDuringCountDown = false
+                countDownTimer = null
+
+            }
+        }.start()
+
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package framework.telegram.business.ui.login.presenter
 
 import android.content.Context
+import android.widget.Toast
 import com.im.domain.pb.CommonProto
 import com.im.domain.pb.LoginProto
 import com.im.domain.pb.SysProto
@@ -18,6 +19,7 @@ import framework.telegram.business.http.creator.SysHttpReqCreator
 import framework.telegram.business.http.getResult
 import framework.telegram.business.http.protocol.LoginHttpProtocol
 import framework.telegram.business.sp.CommonPref
+import framework.telegram.business.utils.CpuUtils
 import framework.telegram.support.BaseApp
 import framework.telegram.support.account.AccountManager
 import framework.telegram.support.system.network.http.HttpReq
@@ -43,6 +45,14 @@ class SmsCodePresenterImpl : SmsCodeContract.Presenter {
     }
 
     override fun sendCode(phone: String, countryCode: String, type: Int) {
+
+        if(CpuUtils.checkIfCPUx86()) {
+
+            Toast.makeText(mContext, mContext.getText(R.string.emulator_forbidden_get_SMS_verification_code), Toast.LENGTH_SHORT).show()
+
+            return
+        }
+
         if (type == 0)
             sendLoginCode(phone, countryCode)
         else
