@@ -47,7 +47,7 @@ dependencies {
     api project(path: ':message_bridge')
     api project(path: ':business_bridge')
     // kotlin支持
-    api 'org.jetbrains.kotlin:kotlin-stdlib:1.6.10'
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     // netty网络库
     api 'io.netty:netty-all:4.0.36.Final'
     // arouter支持

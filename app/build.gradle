@@ -117,7 +117,7 @@ dependencies {
     api project(path: ':business')
 
     // kotlin支持
-    api 'org.jetbrains.kotlin:kotlin-stdlib:1.6.10'
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // 推送支持
     api 'com.aliyun.ams:alicloud-android-push:3.7.5'

@@ -48,7 +48,7 @@ dependencies {
     api project(path: ':business_bridge')
 
     // kotlin支持
-    api 'org.jetbrains.kotlin:kotlin-stdlib:1.6.10'
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     // arouter支持
     kapt 'com.alibaba:arouter-compiler:1.2.2'
 
