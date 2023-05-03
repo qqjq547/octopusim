@@ -2,6 +2,7 @@ package framework.telegram.business.http.protocol;
 
 import com.im.domain.pb.LoginProto;
 import com.im.domain.pb.SysProto;
+import com.im.domain.pb.UploadFileProto;
 
 import framework.telegram.support.system.network.http.HttpReq;
 import io.reactivex.Observable;
@@ -35,7 +36,7 @@ public interface LoginHttpProtocol {
     Observable<SysProto.CheckVersionResp> checkVersion(@Body HttpReq<SysProto.CheckVersionReq> req);
 
     @POST("sys/getUploadUrl")
-    Observable<SysProto.GetUploadUrlResp> getUploadUrl(@Body HttpReq<SysProto.GetUploadUrlReq> req);
+    Observable<SysProto.GetUploadUrlResp> getUploadUrl(@Body HttpReq<UploadFileProto.GetUploadUrlReq> req);
 
     @POST("login/logout")
     Observable<LoginProto.LogoutResp> logout(@Body HttpReq<LoginProto.LogoutReq> req);
@@ -45,4 +46,7 @@ public interface LoginHttpProtocol {
 
     @POST("login/getUrls")
     Call<LoginProto.GetUrlsResp> getUrls(@Body HttpReq<LoginProto.GetUrlsReq> req);
+
+    @POST("sys/getAwsUpload")
+    Observable<UploadFileProto.GetAwsUploadResp> getAwsUpload(@Body HttpReq<UploadFileProto.GetAwsUploadReq> req);
 }

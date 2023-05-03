@@ -50,6 +50,7 @@ dependencies {
     api 'org.jetbrains.kotlin:kotlin-stdlib:1.6.10'
     // netty网络库
     api 'io.netty:netty-all:4.0.36.Final'
+    implementation project(path: ':business')
     // arouter支持
     kapt 'com.alibaba:arouter-compiler:1.2.2'
 

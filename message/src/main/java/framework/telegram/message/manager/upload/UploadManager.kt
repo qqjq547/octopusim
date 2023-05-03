@@ -353,8 +353,9 @@ object UploadManager {
     ) {
         ThreadUtils.runOnIOThread {
             val file = File(Uri.parse(filePathUri).path)
-            val encryptFile = framework.telegram.ui.utils.FileUtils.getEncryptFile(file)
-            val encryptTmpFile = framework.telegram.ui.utils.FileUtils.getEncryptTmpFile(file)
+            val encryptFile = File("${Uri.parse(filePathUri).path}___encrypt}")
+            val encryptTmpFile =
+                File("${Uri.parse(filePathUri).path}___encrypt___${System.currentTimeMillis()}")
 
             try {
                 // 加密附件
@@ -467,6 +468,9 @@ object UploadManager {
         ) {
             // 重命名为正式加密名称
             encryptTmpFile.renameTo(encryptFile)
+
+
+
             if (UPLOAD_WAY_TYPE == 0) {
                 OssUploadImpl.createUploadTask(
                     chatType,
@@ -483,7 +487,24 @@ object UploadManager {
                     }, { t ->
                         AppLogcat.logger.e(t)
                     })
-            } else {
+            } else if(UPLOAD_WAY_TYPE == 1) {
+
+                AwsUploadImpl.createUploadTask(
+                    chatType,
+                    targetId,
+                    msgLocalId,
+                    encryptFile,
+                    type,
+                    spaceType,
+                    showProgress,
+                    cancelSignal,
+                    complete,
+                    error, { msg ->
+                        AppLogcat.logger.e(msg)
+                    }, { t ->
+                        AppLogcat.logger.e(t)
+                    })
+            }else{
                 ImUploadImpl.createUploadTask(
                     chatType,
                     targetId,
@@ -553,7 +574,11 @@ object UploadManager {
     ) {
         if (UPLOAD_WAY_TYPE == 0) {
             OssUploadImpl.createFileUploadTask(file, type, spaceType, complete, error)
-        } else {
+        } else if(UPLOAD_WAY_TYPE == 2){
+            // AwsUploadImpl.createFileUploadTask(file, type, spaceType, complete, error)
+
+            framework.telegram.business.manager.AwsUploadImpl.uploadFile(file, type,spaceType,null,complete,error)
+        }else{
             ImUploadImpl.createFileUploadTask(file, type, spaceType, complete, error)
         }
     }
