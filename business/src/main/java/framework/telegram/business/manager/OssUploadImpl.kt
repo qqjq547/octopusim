@@ -101,7 +101,7 @@ object OssUploadImpl :InterfaceUpload{
         HttpManager.getStore(LoginHttpProtocol::class.java)
             .getUploadUrl(object : HttpReq<UploadFileProto.GetUploadUrlReq>() {
                 override fun getData(): UploadFileProto.GetUploadUrlReq {
-                    return SysHttpReqCreator.getUploadUrl(Constant.Common.UPLOAD_WAY_TYPE as Long,spaceType,type)
+                    return SysHttpReqCreator.getUploadUrl(Constant.Common.UPLOAD_WAY_TYPE.toLong(),spaceType,type)
                 }
             })
             .getResult(null, {
