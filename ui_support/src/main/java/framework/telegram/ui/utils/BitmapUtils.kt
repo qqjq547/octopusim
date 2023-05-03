@@ -1,12 +1,16 @@
 package framework.telegram.ui.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.PixelFormat
 import android.graphics.drawable.Drawable
-import framework.telegram.ui.utils.FileUtils
+import android.os.Build
+import android.os.Environment
+import framework.telegram.support.BaseApp
 import java.io.*
+
 
 class BitmapUtils {
 
@@ -89,7 +93,7 @@ class BitmapUtils {
             drawable.draw(canvas)
             return bitmap
         }
-    }
 
+    }
 
 }

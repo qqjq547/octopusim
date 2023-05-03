@@ -15,6 +15,8 @@ object UploadManager : InterfaceUpload {
     override fun uploadFile(owner: LifecycleOwner, filePathUri: String, type: CommonProto.AttachType, spaceType: CommonProto.AttachWorkSpaceType, complete: (String) -> Unit, error: () -> Unit) {
         if (UPLOAD_WAY_TYPE == 0){
             OssUploadImpl.uploadFile(owner, filePathUri, type, spaceType, complete, error)
+        }else if(UPLOAD_WAY_TYPE == 1){
+            AwsUploadImpl.uploadFile(owner, filePathUri, type, spaceType, complete, error)
         }else{
             ImUploadImpl.uploadFile(owner, filePathUri, type, spaceType, complete, error)
         }

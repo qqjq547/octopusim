@@ -84,4 +84,8 @@ dependencies {
     api 'com.codersun:fingermanager:1.0.0'
 
     api 'cn.bingoogolapple:bga-qrcode-zbar:1.3.7'
+
+    api 'com.github.yalantis:ucrop:2.2.8'
+
+   // api 'com.github.REBOOTERS:Matisse:0.5.3'
 }
