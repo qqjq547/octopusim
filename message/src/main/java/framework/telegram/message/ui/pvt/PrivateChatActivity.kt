@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
@@ -14,10 +13,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.AudioManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.PowerManager
+import android.os.*
+import android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
@@ -77,6 +74,7 @@ import framework.telegram.support.mvp.BasePresenter
 import framework.telegram.support.system.cache.kotlin.applyCache
 import framework.telegram.support.system.event.EventBus
 import framework.telegram.support.system.log.AppLogcat
+import framework.telegram.support.system.log.core.utils.FileUtils.createDir
 import framework.telegram.support.system.network.http.HttpReq
 import framework.telegram.support.tools.*
 import framework.telegram.support.tools.ExpandClass.toast
@@ -109,29 +107,12 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.msg_activity_pvt_chat.*
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.custom_toolbar
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.emoji_text_view_reply_content
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.emoji_text_view_reply_user_nickname
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.image_view_delete_check_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.image_view_fire_bg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.image_view_new_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.image_view_reply_close
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.image_view_send_check_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.layout_check_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.layout_new_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.layout_reply_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.message_input_view
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.recycler_view_messages
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.text_view_cancel_check_msg
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.text_view_check_msg_title
-import kotlinx.android.synthetic.main.msg_activity_pvt_chat.text_view_new_msg
 import kotlinx.android.synthetic.main.msg_recording_layout.*
 import java.io.File
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+
 
 @Route(path = Constant.ARouter.ROUNTE_MSG_PRIVATE_CHAT_ACTIVITY)
 class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEventListener {
@@ -1874,6 +1855,7 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
                 ).show()
                 finish()
             }
+
         }
 
         if (requestCode == TOOL_IMAGEPICKER_REQUESTCODE && resultCode == Activity.RESULT_OK) {
@@ -2033,6 +2015,12 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
                         Manifest.permission.READ_EXTERNAL_STORAGE
                     ), GET_PERMISSIONS_REQUEST_CODE
                 )
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager()) {
+                    val intent = Intent(ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    startActivity(intent)
+                }
             }
         }
 

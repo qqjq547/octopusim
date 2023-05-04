@@ -15,10 +15,8 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.AudioManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.PowerManager
+import android.os.*
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
@@ -1752,6 +1750,12 @@ class GroupChatActivity : BaseActivity(), GroupChatContract.View, SensorEventLis
                         Manifest.permission.READ_EXTERNAL_STORAGE
                     ), GET_PERMISSIONS_REQUEST_CODE
                 )
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager()) {
+                    val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    startActivity(intent)
+                }
             }
         }
 
