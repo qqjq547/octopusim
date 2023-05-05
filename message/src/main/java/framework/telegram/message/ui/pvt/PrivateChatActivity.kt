@@ -13,8 +13,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.media.AudioManager
+import android.net.Uri
 import android.os.*
-import android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
@@ -2018,7 +2019,8 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (!Environment.isExternalStorageManager()) {
-                    val intent = Intent(ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    intent.data = Uri.parse("package:" +packageName)
                     startActivity(intent)
                 }
             }
