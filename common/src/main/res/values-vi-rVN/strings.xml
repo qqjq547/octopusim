@@ -553,7 +553,7 @@
     <string name="clear_chat_logs">Xóa lịch sử trò chuyện</string>
 
     <string name="some_one_at_me_sign">[Có người tag @tôi]</string>
-    <string name="some_one_at_me_sign_mat">[Ai đó @我]%s</string>
+    <string name="some_one_at_me_sign_mat">[Ai đó @ Tôi]%s</string>
     <string name="there_is_a_new_announcement_sign">[Thông báo mới]</string>
     <string name="there_is_a_new_announcement_sign_mat">[Thông báo mới] %s</string>
     <string name="draft_sign">[Bản nháp]</string>
