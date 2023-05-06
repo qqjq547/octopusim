@@ -2017,13 +2017,13 @@ class PrivateChatActivity : BaseActivity(), PrivateChatContract.View, SensorEven
                     ), GET_PERMISSIONS_REQUEST_CODE
                 )
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (!Environment.isExternalStorageManager()) {
-                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                    intent.data = Uri.parse("package:" +packageName)
-                    startActivity(intent)
-                }
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//                if (!Environment.isExternalStorageManager()) {
+//                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+//                    intent.data = Uri.parse("package:" +packageName)
+//                    startActivity(intent)
+//                }
+//            }
         }
 
         if (!mUseSpeaker) {

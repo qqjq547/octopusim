@@ -353,9 +353,9 @@ object UploadManager {
     ) {
         ThreadUtils.runOnIOThread {
             val file = File(Uri.parse(filePathUri).path)
-            val encryptFile = File("${Uri.parse(filePathUri).path}___encrypt}")
+            val encryptFile = File("${framework.telegram.ui.utils.FileUtils.getBitmapThumbFilePath(file)}___encrypt}")
             val encryptTmpFile =
-                File("${Uri.parse(filePathUri).path}___encrypt___${System.currentTimeMillis()}")
+                File("${framework.telegram.ui.utils.FileUtils.getBitmapThumbFilePath(file)}___encrypt___${System.currentTimeMillis()}")
 
             try {
                 // 加密附件

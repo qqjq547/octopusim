@@ -59,32 +59,15 @@ public class FileUtils {
 
 
     public static String getBitmapThumbFilePath( File file) {
-         if (Build.VERSION.SDK_INT > 29) {
-            return  BaseApp.app.getExternalFilesDir(null).getAbsolutePath() + "/" + file.getName()  + "___thumb";
-        } else {
-            return file.getAbsolutePath() + "___thumb";
-        }
-
+        return BaseApp.app.getCacheDir().getAbsolutePath() + "/" + file.getName() + "___thumb";
     }
 
     public static File getEncryptTmpFile( File file) {
-        if (Build.VERSION.SDK_INT > 29) {
-            return  new File(BaseApp.app.getExternalFilesDir(null).getAbsolutePath() + "/" + file.getName() + "___encrypt___" + System.currentTimeMillis());
-        } else {
-            return  new File(file.getPath()+"___encrypt___" + System.currentTimeMillis());
-
-        }
-
+        return  new File(BaseApp.app.getExternalFilesDir(null).getAbsolutePath() + "/" + file.getName() + "___encrypt___" + System.currentTimeMillis());
     }
 
     public static File getEncryptFile( File file) {
-        if (Build.VERSION.SDK_INT > 29) {
-            return  new File(BaseApp.app.getExternalFilesDir(null).getAbsolutePath() + "/" + file.getName() + "___encrypt}");
-        } else {
-            return  new File(file.getPath()+"___encrypt}");
-
-        }
-
+        return  new File(BaseApp.app.getCacheDir().getAbsolutePath() + "/" + file.getName() + "___encrypt}");
     }
 
 
