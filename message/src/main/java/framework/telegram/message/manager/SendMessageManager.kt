@@ -291,7 +291,7 @@ object SendMessageManager {
         ) { savedMsgModel ->
             // 转换成mp3
             val msgLocalId = savedMsgModel.id
-            compressVoice(attachment, { mp3File ->
+//            compressVoice(attachment, { mp3File ->
                 MessageController.executeChatTransactionAsyncWithResult(
                     chatType,
                     myUid,
@@ -302,7 +302,7 @@ object SendMessageManager {
                                 .findFirst()
                         targetModel?.let {
                             val voiceContent = targetModel.voiceMessageContent
-                            voiceContent.recordFileBackupUri = Uri.fromFile(mp3File).toString()
+                            voiceContent.recordFileBackupUri = Uri.fromFile(attachment).toString()
                             targetModel.voiceMessageContent = voiceContent
                             targetModel.status = MessageModel.STATUS_ATTACHMENT_UPLOADING
                             realm.copyToRealmOrUpdate(targetModel)
@@ -328,11 +328,11 @@ object SendMessageManager {
                             }
                         }
                     })
-            }, {
-                //压缩音频失败
-                sendMessageFail(chatType, myUid, msgModel)
-                MobclickAgent.reportError(BaseApp.app, it)
-            })
+//            }, {
+//                //压缩音频失败
+//                sendMessageFail(chatType, myUid, msgModel)
+//                MobclickAgent.reportError(BaseApp.app, it)
+//            })
         }
     }
 
