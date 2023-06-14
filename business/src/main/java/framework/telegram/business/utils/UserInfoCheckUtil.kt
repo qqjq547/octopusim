@@ -30,6 +30,16 @@ object UserInfoCheckUtil {
         return true
     }
 
+    fun checkMobile2(mobile: String, countyCode: String): Boolean {
+        if (ValidationUtils.isEmpty(mobile)) {
+            return false
+        }
+        if (!phoneNumberIsAvailable(mobile, countyCode)) {
+            return false
+        }
+        return true
+    }
+
     /**
      * 检查密码
      * @param context

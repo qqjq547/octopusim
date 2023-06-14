@@ -159,10 +159,12 @@ class LoginPresenterImpl : LoginContract.Presenter {
                     .register(object : HttpReq<LoginProto.RegReq>() {
                         override fun getData(): LoginProto.RegReq {
                             return LoginHttpReqCreator.createRegisterReq(
-                                    phone,
-                                    smsCode,
-                                    countryCode,
-                                    HexString.bufferToHex(keyPair.publicKey))
+                                0,
+                                "",
+                                phone,
+                                smsCode,
+                                countryCode,
+                                HexString.bufferToHex(keyPair.publicKey))
                         }
                     })
                     .getResult(mViewObservalbe, {
