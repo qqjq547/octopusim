@@ -37,11 +37,6 @@ class BusinessApplication {
         fun init(context: Context) {
             ZXingLibrary.initDisplayOpinion(context)
             SearchDbManager.initDb(context)
-
-            if (framework.telegram.support.BuildConfig.IS_LAB_MODEL) {
-                PinCodeUnlock.UNLOCK_ERROR_WAIT_TIME = 60 * 1000
-                GestureUnlock.UNLOCK_ERROR_WAIT_TIME = 60 * 1000
-            }
         }
 
         fun setPassword(password: String) {
