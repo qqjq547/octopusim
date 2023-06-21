@@ -39,7 +39,7 @@ object AwsUploadImpl {
         fileLog: (String) -> Unit,
         throwableLog: (Throwable) -> Unit
     ) {
-        if (!BuildConfig.IS_JENKINS) OSSLog.enableLog()
+         OSSLog.enableLog()
         fileLog.invoke("开始上传...")
 
         val progressChangedListener = object : AwsUploadImpl.OnProgressChangedListener{
@@ -64,7 +64,7 @@ object AwsUploadImpl {
                     )
                 } else if (cancelSignal.get()) {
                     cancel.invoke()
-                    if (!BuildConfig.IS_JENKINS) Log.i(
+                    Log.i(
                         "task",
                         "$currentSize * 0.8 + 0.2 = ${currentSize * 0.8 + 0.2} - pause"
                     )

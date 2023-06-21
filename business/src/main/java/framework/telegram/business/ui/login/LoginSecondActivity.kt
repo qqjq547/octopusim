@@ -51,8 +51,6 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
 
     private val accountInfo by lazy { AccountManager.getLoginAccountByUuid(AccountManager.getLastLoginAccountUuid(), AccountInfo::class.java) }
 
-    private var mUpdatePresenterImpl: UpdatePresenterImpl? = null
-
     private var mFirstLoad = true
 
     //获取屏幕的高度
@@ -68,9 +66,6 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
         text_view_phone.text = accountInfo.getCountryCode() + " " + accountInfo.getPhone()
 
         custom_toolbar.setToolbarColor(R.color.white)
-
-        mUpdatePresenterImpl = UpdatePresenterImpl(this, this, lifecycle())
-        mUpdatePresenterImpl?.start(showCanUpDialog = true, showNotUpdateDialog = false)
 
         requestBasicPermission()
     }
@@ -299,7 +294,6 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
 
     override fun onDestroy() {
         super.onDestroy()
-        mUpdatePresenterImpl?.cancel()
 
         countDownTimer?.let {
 
@@ -338,7 +332,7 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
         text_view_login.isEnabled = false
         text_view_login.background = getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
 
-        countDownText = getString(R.string.count_down) + ":" + totalTimeSecond + "S"
+        countDownText ="${totalTimeSecond}S"
 
         text_view_login.text = countDownText
 
@@ -347,7 +341,7 @@ class LoginSecondActivity : BaseBusinessActivity<LoginContract.Presenter>(), Log
 
             override fun onTick(millisUntilFinished: Long) {
 
-                countDownText = getString(R.string.count_down) + ":" + millisUntilFinished/1000%60 + "S"
+                countDownText = "${millisUntilFinished/1000%60}S"
 
                 if(mType == 1){
                     text_view_login.text = countDownText

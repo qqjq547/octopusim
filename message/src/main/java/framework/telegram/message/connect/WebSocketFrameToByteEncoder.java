@@ -37,7 +37,7 @@ public class WebSocketFrameToByteEncoder extends ChannelOutboundHandlerAdapter {
                 out.writeBytes(messageType);
                 out.writeInt(0);
             } else {
-                content = NativeLibUtil.getInstance().sign1(BaseApp.app, BaseApp.Companion.getIS_TEST_SERVER(), content, 1);
+                content = NativeLibUtil.getInstance().sign1(content, 1);
                 out.writeBytes(packageHead);
                 out.writeBytes(messageType);
                 out.writeInt(content.length);

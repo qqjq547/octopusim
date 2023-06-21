@@ -25,22 +25,15 @@ public class NativeLibUtil {
     /**
      * HTTP\SOCKET 加密
      *
-     * @param context
-     * @param testServer
      * @param data
      * @param mode       1:加密 2:解密
      * @return
      */
-    public byte[] sign1(Context context, boolean testServer, byte[] data, int mode) {
+    public byte[] sign1(byte[] data, int mode) {
         synchronized (this) {
             try {
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-                SecretKeySpec secretKeySpec;
-                if (testServer) {
-                    secretKeySpec = new SecretKeySpec("1234560000000000".getBytes(), "AES");
-                } else {
-                    secretKeySpec = new SecretKeySpec("5I4SGU42ETFI4TQG".getBytes(), "AES");
-                }
+                SecretKeySpec secretKeySpec  = new SecretKeySpec("5I4SGU42ETFI4TQG".getBytes(), "AES");;
                 cipher.init(mode, secretKeySpec);
                 return cipher.doFinal(data);
             } catch (Exception e) {

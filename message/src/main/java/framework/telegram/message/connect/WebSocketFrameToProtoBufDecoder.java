@@ -41,7 +41,7 @@ public class WebSocketFrameToProtoBufDecoder extends ChannelInboundHandlerAdapte
                     content = ZipUtils.unGZip(content);
                 }
                 if (isEncrypt) {
-                    content = NativeLibUtil.getInstance().sign1(BaseApp.app, BaseApp.Companion.getIS_TEST_SERVER(), content, 2);
+                    content = NativeLibUtil.getInstance().sign1(content, 2);
                 }
 
                 msg = new SocketPackageBean(ShortUtils.bytesToShort(messageType, false), content);

@@ -20,6 +20,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 import com.liulishuo.okdownload.DownloadTask.enqueue
+import framework.telegram.support.tools.SSLSocketClient
 import java.io.IOException
 
 
@@ -68,6 +69,8 @@ object UploadManager {
         builder.setType(FORM)
 
         val client = OkHttpClient.Builder()
+            .sslSocketFactory(SSLSocketClient.getSSLSocketFactory())//配置
+            .hostnameVerifier(SSLSocketClient.getHostnameVerifier())//配置
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .writeTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(15, TimeUnit.SECONDS)

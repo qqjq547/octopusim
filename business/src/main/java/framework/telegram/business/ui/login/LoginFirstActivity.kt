@@ -65,8 +65,6 @@ class LoginFirstActivity : BaseBusinessActivity<LoginContract.Presenter>(), Logi
     // 最后一次点击退出的时间
     private var mLastExitTime: Long = 0
 
-    private var mUpdatePresenterImpl: UpdatePresenterImpl? = null
-
     private var mFirstLoad = true
 
     //获取屏幕的高度
@@ -104,12 +102,6 @@ class LoginFirstActivity : BaseBusinessActivity<LoginContract.Presenter>(), Logi
 
         changeLoginMode()
         setTextContent()
-
-        if (!mIsCanCancel) {
-            mUpdatePresenterImpl = UpdatePresenterImpl(this, this, lifecycle())
-            mUpdatePresenterImpl?.start(showCanUpDialog = true, showNotUpdateDialog = false)
-        }
-
         requestBasicPermission()
     }
 
@@ -434,7 +426,7 @@ class LoginFirstActivity : BaseBusinessActivity<LoginContract.Presenter>(), Logi
         text_view_login.isEnabled = false
         text_view_login.background = getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
 
-        countDownText = getString(R.string.count_down) + ":" + totalTimeSecond + "S"
+        countDownText = "${totalTimeSecond}S"
 
         text_view_login.text = countDownText
 
@@ -443,7 +435,7 @@ class LoginFirstActivity : BaseBusinessActivity<LoginContract.Presenter>(), Logi
 
             override fun onTick(millisUntilFinished: Long) {
 
-                countDownText = getString(R.string.count_down) + ":" + millisUntilFinished/1000%60 + "S"
+                countDownText = "${millisUntilFinished/1000%60}S"
 
                 if(mType == 1){
                     text_view_login.text = countDownText

@@ -81,7 +81,6 @@ class MainActivity : BaseActivity(), IMultiCheckable {
         MSG, ADD, PHOTO, ME
     }
 
-    private var mUpdatePresenterImpl: UpdatePresenterImpl? = null
     private var mMainImpl: MainImpl? = null
 
     private val mFromLogin by lazy { intent.getBooleanExtra("fromLogin", false) }
@@ -110,12 +109,6 @@ class MainActivity : BaseActivity(), IMultiCheckable {
         clickButton(PAGE.MSG)
 
         OpenInstall.getInstall(installAdapter)
-
-        mUpdatePresenterImpl = UpdatePresenterImpl(this, this, lifecycle())
-        mUpdatePresenterImpl?.start(
-            showCanUpDialog = mUpdatePresenterImpl?.needCheckVersion() == true,
-            showNotUpdateDialog = false
-        )
 
         mMainImpl = MainImpl(this, lifecycle())
 

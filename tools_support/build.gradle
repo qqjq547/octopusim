@@ -12,15 +12,13 @@ android {
         minSdkVersion cfg.minSdk
         targetSdkVersion cfg.targetSdk
 
-        buildConfigField "boolean", "JENKINS_IS_TEST_SERVER", JENKINS_IS_TEST_SERVER
+
 // Jenkins 是否使用测试服
         buildConfigField "String", "JENKINS_TINKER_APK_ID", JENKINS_TINKER_APK_ID// Jenkins 控制的包名
         buildConfigField "int", "JENKINS_VERSION_CODE", JENKINS_VERSION_CODE// Jenkins version_code
         buildConfigField "String", "JENKINS_VERSION_NAME", JENKINS_VERSION_NAME
 // Jenkins version_name
-        buildConfigField "boolean", "IS_JENKINS", IS_JENKINS// Jenkins 是否使用Jenkins打包
 
-        buildConfigField "boolean", "IS_LAB_MODEL", IS_LAB_MODEL// Jenkins 是否使用Jenkins打包
     }
 
     compileOptions {

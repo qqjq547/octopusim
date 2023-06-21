@@ -5,14 +5,13 @@ import framework.ideas.common.model.contacts.ContactDataModel
 import framework.ideas.common.model.group.GroupInfoModel
 import framework.ideas.common.model.group.GroupMemberModel
 import framework.telegram.business.bridge.bean.SelectedUsersModel
-import framework.telegram.support.BuildConfig.JENKINS_IS_TEST_SERVER
+
 
 object Constant {
 
     object Common {
 
-        var LOGIN_HTTP_HOST =
-            if (JENKINS_IS_TEST_SERVER) "http://login.jargutech.com:8080" else "https://login.bufag3.com"
+        var LOGIN_HTTP_HOST = "https://login.bufa.run"
 
         var BIZ_HTTP_HOST: String = ""
 

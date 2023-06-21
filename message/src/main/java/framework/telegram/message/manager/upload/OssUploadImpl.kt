@@ -23,7 +23,6 @@ import framework.telegram.message.http.creator.SysHttpReqCreator
 import framework.telegram.message.http.getResult
 import framework.telegram.message.http.protocol.LoginHttpProtocol
 import framework.telegram.support.BaseApp
-import framework.telegram.support.BuildConfig.IS_JENKINS
 import framework.telegram.support.system.network.http.HttpReq
 import framework.telegram.support.tools.FileUtils
 import java.io.File
@@ -77,7 +76,7 @@ object OssUploadImpl : InterfaceUpload {
         fileLog: (String) -> Unit,
         throwableLog: (Throwable) -> Unit
     ) {
-        if (!IS_JENKINS) OSSLog.enableLog()
+        OSSLog.enableLog()
         var task: OSSAsyncTask<*>? = null
         fileLog.invoke("开始上传...")
         if (expiration == 0L || credentialProvider == null || bucketName == "" || endpoint == "" || (expiration < System.currentTimeMillis())) {
@@ -123,7 +122,7 @@ object OssUploadImpl : InterfaceUpload {
                                             )
                                         } else if (cancelSignal.get()) {
                                             task?.cancel()
-                                            if (!IS_JENKINS) Log.i(
+                                             Log.i(
                                                 "task",
                                                 "$currentSize * 0.8 + 0.2 = ${currentSize * 0.8 + 0.2} - pause"
                                             )
@@ -182,7 +181,7 @@ object OssUploadImpl : InterfaceUpload {
                                             )
                                         } else if (cancelSignal.get()) {
                                             task?.cancel()
-                                            if (!IS_JENKINS) Log.i(
+                                           Log.i(
                                                 "task",
                                                 "$currentSize * 0.8 + 0.2 = ${currentSize * 0.8 + 0.2} - pause"
                                             )
@@ -243,7 +242,7 @@ object OssUploadImpl : InterfaceUpload {
                                 )
                             } else if (cancelSignal.get()) {
                                 task?.cancel()
-                                if (!IS_JENKINS) Log.i(
+                                 Log.i(
                                     "task",
                                     "$currentSize * 0.8 + 0.2 = ${currentSize * 0.8 + 0.2} - pause"
                                 )
@@ -298,7 +297,7 @@ object OssUploadImpl : InterfaceUpload {
                                 )
                             } else if (cancelSignal.get()) {
                                 task?.cancel()
-                                if (!IS_JENKINS) Log.i(
+                                 Log.i(
                                     "task",
                                     "$currentSize * 0.8 + 0.2 = ${currentSize * 0.8 + 0.2} - pause"
                                 )

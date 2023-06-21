@@ -5,11 +5,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import android.os.CountDownTimer
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.trello.rxlifecycle3.android.lifecycle.kotlin.bindToLifecycle
@@ -38,12 +38,7 @@ import framework.telegram.ui.dialog.AppDialog
 import framework.telegram.ui.utils.KeyboardktUtils
 import framework.telegram.ui.utils.NavBarUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.bus_login_activity_first.*
 import kotlinx.android.synthetic.main.bus_login_activity_register.*
-import kotlinx.android.synthetic.main.bus_login_activity_register.custom_toolbar
-import kotlinx.android.synthetic.main.bus_login_activity_register.edit_text_phone
-import kotlinx.android.synthetic.main.bus_login_activity_register.linear_layout_all
-import kotlinx.android.synthetic.main.bus_login_activity_register.text_view_country_code
 
 /**
  * Created by lzh on 19-5-16.
@@ -51,6 +46,16 @@ import kotlinx.android.synthetic.main.bus_login_activity_register.text_view_coun
  */
 @Route(path = Constant.ARouter.ROUNTE_BUS_LOGIN_REGISTER)
 class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), RegisterContract.View {
+
+
+
+    //注册模式, 0:短信（默认）， 1:密码
+    private val REGISTER_TYPE_SMS_CODE = 0
+    private val REGISTER_TYPE_PWD = 1
+
+
+
+    private val registerType = 1
 
     private var mCountyStr: String = "+84"
     private var mPasswordOK = false
@@ -66,7 +71,16 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
     override fun getLayoutId() = R.layout.bus_login_activity_register
 
     override fun initView() {
-        text_view_register.isEnabled = false
+        if(registerType == REGISTER_TYPE_PWD){
+            tv_send_sms_code.visibility = View.GONE
+            set_pwd_layout.visibility = View.VISIBLE
+        }
+
+        if(registerType == REGISTER_TYPE_SMS_CODE){
+            tv_send_sms_code.visibility = View.VISIBLE
+            set_pwd_layout.visibility = View.GONE
+        }
+        tv_send_sms_code.isEnabled = false
 
         edit_text_phone.setSelection(edit_text_phone.text.toString().length)
 
@@ -79,6 +93,42 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
         custom_toolbar.setToolbarColor(R.color.white)
 
         requestBasicPermission()
+
+        //密码
+        edit_pwd1.initEasyEditText(true, true, false,null) {
+
+            setRegisterByPwdBtn()
+        }
+        edit_pwd1.et.hint = getString(R.string.bus_login_password_input_error_2)
+
+        //再次输入新密码
+        edit_pwd2.initEasyEditText(true, true, false,null) {
+            setRegisterByPwdBtn()
+        }
+        edit_pwd2.et.hint = getString(R.string.confirm_password)
+    }
+
+    private fun setRegisterByPwdBtn(){
+
+        val pwd1 = edit_pwd1.et.text.toString().trim()
+        val pwd2 = edit_pwd2.et.text.toString().trim()
+
+        if (UserInfoCheckUtil.checkMobile2(edit_text_phone.text.toString().trim(), mCountyStr) && doubleCheckPwd(pwd1,pwd2)){
+
+            tv_register_by_pwd.isEnabled = true
+            tv_register_by_pwd.background = getSimpleDrawable(R.drawable.common_corners_trans_178aff_6_0)
+
+        }else{
+            tv_register_by_pwd.isEnabled = false
+            tv_register_by_pwd.background = getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
+        }
+    }
+
+
+    private fun doubleCheckPwd(pwd1: String, pwd2: String): Boolean {
+        return TextUtils.isEmpty(pwd1).not() &&  pwd1.length >= 6 && pwd1.length <= 24
+                && TextUtils.isEmpty(pwd2).not() &&  pwd2.length >= 6 && pwd2.length <= 24
+                && pwd1 == pwd2
     }
 
     /******************权限*****************/
@@ -147,7 +197,7 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
             KeyboardktUtils.hideKeyboard(linear_layout_all)
         }
 
-        text_view_register.setOnClickListener {
+        tv_send_sms_code.setOnClickListener {
             val phone = edit_text_phone.text.trim().toString()
             if (!UserInfoCheckUtil.checkMobile(this, phone, mCountyStr))
                 return@setOnClickListener
@@ -164,6 +214,8 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
             override fun afterTextChanged(str: Editable?) {
                 mPasswordOK = !TextUtils.isEmpty(str)
                 setRegisterBtn()
+
+                setRegisterByPwdBtn()
             }
         })
 
@@ -192,6 +244,11 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
             }
         }
         edit_text_phone.setText(mDefaultPhone)
+
+        tv_register_by_pwd.setOnClickListener {
+
+            mPresenter?.registerByPwd(mCountyStr, edit_text_phone.text.trim().toString(), edit_pwd1.et.text.toString().trim())
+        }
     }
 
     private fun getUrl(): String {
@@ -260,9 +317,6 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
         if (!TextUtils.isEmpty(str)) {
             toast(str.toString())
         }
-
-        startGetSmsCodeCountDown(time)
-
         ARouter.getInstance().build(Constant.ARouter.ROUNTE_BUS_LOGIN_GET_SMS_CODE)
             .withString("countryCode", mCountyStr)
             .withString("phone", edit_text_phone.text.trim().toString())
@@ -289,17 +343,14 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
     }
 
     private fun setRegisterBtn() {
-
-        if(isDuringCountDown.not()){
-            if (mPasswordOK) {
-                text_view_register.isEnabled = true
-                text_view_register.background =
-                    getSimpleDrawable(R.drawable.common_corners_trans_178aff_6_0)
-            } else {
-                text_view_register.isEnabled = false
-                text_view_register.background =
-                    getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
-            }
+        if (mPasswordOK) {
+            tv_send_sms_code.isEnabled = true
+            tv_send_sms_code.background =
+                getSimpleDrawable(R.drawable.common_corners_trans_178aff_6_0)
+        } else {
+            tv_send_sms_code.isEnabled = false
+            tv_send_sms_code.background =
+                getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
         }
     }
 
@@ -313,54 +364,4 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
             }
         }
     }
-
-
-    private var countDownTimer: CountDownTimer? = null
-
-    private var isDuringCountDown = false
-
-    private fun startGetSmsCodeCountDown(totalTimeSecond: Int) {
-
-        isDuringCountDown = true
-
-        text_view_register.isEnabled = false
-        text_view_register.background =
-            getSimpleDrawable(R.drawable.common_corners_trans_d4d6d9_6_0)
-        text_view_register.text = getString(R.string.count_down) + totalTimeSecond + "s"
-
-
-        countDownTimer = object : CountDownTimer(totalTimeSecond * 1000L, 1000) {
-
-            override fun onTick(millisUntilFinished: Long) {
-
-                text_view_register.text =
-                    getString(R.string.count_down) + millisUntilFinished / 1000 % 60 + "s"
-            }
-
-            override fun onFinish() {
-
-                text_view_register.text = getString(R.string.bus_get_sms_code)
-
-                setRegisterBtn()
-
-                countDownTimer = null
-
-                isDuringCountDown = false
-            }
-        }.start()
-
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        countDownTimer?.let {
-
-            it.cancel()
-
-            countDownTimer= null
-        }
-    }
-
 }

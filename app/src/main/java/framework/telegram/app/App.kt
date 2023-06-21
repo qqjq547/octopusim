@@ -1,12 +1,11 @@
 package framework.telegram.app
 
-//import com.fm.openinstall.OpenInstall
-import android.Manifest
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.LauncherActivity
 import android.content.Context
-import android.content.pm.PackageManager
+
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -24,11 +23,8 @@ import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFact
 import com.fm.openinstall.OpenInstall
 import com.manusunny.pinlock.PinCodeUnlock
 import com.meituan.android.walle.WalleChannelReader
-/*import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher*/
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
-import de.greenrobot.common.Base64
 import framework.ideas.common.http.BackupLoginHostInterceptor
 import framework.ideas.common.rlog.RLogManager
 import framework.telegram.app.keepalive.utils.isMainProcess
@@ -132,7 +128,7 @@ class App : BaseApp() {
             initGlide()
             initUmeng()
             initOpeninstall()
-            initLeakCanary()
+            //initLeakCanary()
 
             // 初始化emoji表情
             EmojiManager.install(IosEmojiProvider())
@@ -173,43 +169,6 @@ class App : BaseApp() {
 
     private fun initFilterWords() {
         WordFilter.addDetaultSensitiveWords()
-//        try {
-//            val sp = SharePreferencesStorage.createStorageInstance(
-//                framework.telegram.message.sp.CommonPref::class.java
-//            )
-//
-//            if (System.currentTimeMillis() - sp.getFilterWordsTime() > 2 * 24 * 60 * 60 * 1000) {
-//                HttpClientCreater.newOkHttpClient().newCall(
-//                    Request.Builder().get()
-//                        .url("http://profile-resource.oss-cn-hongkong.aliyuncs.com/config/keyword.txt")
-//                        .build()
-//                ).enqueue(object : Callback {
-//
-//                    override fun onFailure(call: Call, e: IOException) {
-//                        WordFilter.addDetaultSensitiveWords()
-//                    }
-//
-//                    override fun onResponse(call: Call, response: Response) {
-//                        try {
-//                            if (response.isSuccessful) {
-//                                val words = response.body()?.string() ?: ""
-//                                val keywords = String(Base64.decode(words))
-//
-//                                sp.putFilterWords(words)
-//                                sp.putFilterWordsTime(System.currentTimeMillis())
-//                                WordFilter.addSensitiveWords(keywords)
-//                            } else {
-//                                WordFilter.addDetaultSensitiveWords()
-//                            }
-//                        } catch (e: Exception) {
-//                        }
-//                    }
-//                })
-//            } else {
-//                WordFilter.addSensitiveWords(String(Base64.decode(sp.getFilterWords())))
-//            }
-//        } catch (e: Exception) {
-//        }
     }
 
     private fun initFresco() {
@@ -621,21 +580,8 @@ class App : BaseApp() {
     }
 
     private fun isEnablePush(): Boolean {
-        return !IS_TEST_SERVER
+        return !BuildConfig.DEBUG
     }
-
-    private fun initLeakCanary() {
-        /*if (IS_JENKINS_BUILD)
-            return
-
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            refWatcher = RefWatcher.DISABLED
-        }
-        refWatcher = LeakCanary.install(this)*/
-    }
-
 
 
     private fun initThread() {

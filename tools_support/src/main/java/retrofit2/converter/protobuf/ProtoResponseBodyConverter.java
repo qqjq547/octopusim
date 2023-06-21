@@ -83,7 +83,7 @@ public final class ProtoResponseBodyConverter<T extends MessageLite>
                     }
 
                     if (isEncrypt) {
-                        contentBuffer = NativeLibUtil.getInstance().sign1(BaseApp.app, BaseApp.Companion.getIS_TEST_SERVER(), contentBuffer, 2);
+                        contentBuffer = NativeLibUtil.getInstance().sign1(contentBuffer, 2);
                     }
 
                     return contentBuffer;

@@ -59,7 +59,7 @@ public class ByteToProtoBufDecoder extends LengthFieldBasedFrameDecoder {
             content = ZipUtils.unGZip(content);
         }
         if (isEncrypt) {
-            content = NativeLibUtil.getInstance().sign1(BaseApp.app, BaseApp.Companion.getIS_TEST_SERVER(), content, 2);
+            content = NativeLibUtil.getInstance().sign1(content, 2);
         }
 
         return new SocketPackageBean(ShortUtils.bytesToShort(messageType, false), content);

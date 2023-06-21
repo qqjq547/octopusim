@@ -134,7 +134,7 @@ class ChatsAdapter(val observable: Observable<ActivityEvent>?) :
     }
 
     override fun convert(helper: BaseViewHolder, content: ChatCacheModel?) {
-        if (!BaseApp.IS_JENKINS_BUILD) Log.i(
+         Log.i(
             this.javaClass.simpleName,
             "convert - update" + content?.chatModel?.lastMsg
         )
@@ -153,7 +153,7 @@ class ChatsAdapter(val observable: Observable<ActivityEvent>?) :
         item: ChatCacheModel,
         payloads: List<Any>
     ) {
-        if (!BaseApp.IS_JENKINS_BUILD) Log.i(this.javaClass.simpleName, "convertPayloads - update")
+        Log.i(this.javaClass.simpleName, "convertPayloads - update")
         for (p in payloads) {
             // 如果更新状态则同时更新消息
             bindView(helper, item)

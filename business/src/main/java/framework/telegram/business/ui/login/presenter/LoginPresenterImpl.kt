@@ -24,11 +24,11 @@ import framework.telegram.business.http.getResult
 import framework.telegram.business.http.protocol.LoginHttpProtocol
 import framework.telegram.business.http.protocol.SystemHttpProtocol
 import framework.telegram.business.sp.CommonPref
-import framework.telegram.business.utils.CpuUtils
 import framework.telegram.support.BaseApp
 import framework.telegram.support.account.AccountManager
 import framework.telegram.support.system.network.http.HttpReq
 import framework.telegram.support.system.storage.sp.SharePreferencesStorage
+import framework.telegram.support.tools.DeviceUtils
 import framework.telegram.support.tools.HexString
 import framework.telegram.support.tools.MD5
 import io.reactivex.Observable
@@ -121,9 +121,9 @@ class LoginPresenterImpl : LoginContract.Presenter {
     override fun sendCode(phone: String, countryCode: String) {
 
 
-        if(CpuUtils.checkIfCPUx86()) {
+        if(DeviceUtils.isEmulator()) {
 
-            Toast.makeText(mContext, mContext.getText(R.string.emulator_forbidden_get_SMS_verification_code), Toast.LENGTH_SHORT).show()
+            mView.sendCodeSuccess(mContext.getString(R.string.bus_login_sms_code_send),60)
 
             return
         }

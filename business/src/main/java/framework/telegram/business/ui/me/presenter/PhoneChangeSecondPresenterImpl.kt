@@ -14,8 +14,8 @@ import framework.telegram.business.http.getResult
 import framework.telegram.business.http.protocol.LoginHttpProtocol
 import framework.telegram.business.http.protocol.SystemHttpProtocol
 import framework.telegram.business.http.protocol.UserHttpProtocol
-import framework.telegram.business.utils.CpuUtils
 import framework.telegram.support.system.network.http.HttpReq
+import framework.telegram.support.tools.DeviceUtils
 import io.reactivex.Observable
 
 class PhoneChangeSecondPresenterImpl : PhoneChangeSecondContract.Presenter {
@@ -38,9 +38,9 @@ class PhoneChangeSecondPresenterImpl : PhoneChangeSecondContract.Presenter {
 
     override fun sendCode(phone: String, countryCode: String) {
 
-        if(CpuUtils.checkIfCPUx86()) {
+        if(DeviceUtils.isEmulator()) {
 
-            Toast.makeText(mContext, mContext.getText(R.string.emulator_forbidden_get_SMS_verification_code), Toast.LENGTH_SHORT).show()
+            mView.sendCodeSuccess(mContext.getString(R.string.bus_login_sms_code_send))
 
             return
         }

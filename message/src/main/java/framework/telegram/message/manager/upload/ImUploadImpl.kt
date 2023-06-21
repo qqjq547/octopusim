@@ -3,7 +3,6 @@ package framework.telegram.message.manager.upload
 import android.util.Log
 import com.im.domain.pb.CommonProto
 import framework.telegram.message.controller.UploadAttachmentController
-import framework.telegram.support.BuildConfig.IS_JENKINS
 import framework.telegram.support.system.upload.ResultListener
 import framework.telegram.support.system.upload.UploadManager
 import framework.telegram.support.tools.FileUtils
@@ -57,7 +56,7 @@ object ImUploadImpl : InterfaceUpload {
                             totalSize
                         )
                     } else if (cancelSignal.get()) {
-                        if (!IS_JENKINS) Log.i(
+                        Log.i(
                             "task",
                             "$currentSize * 0.8 + 0.2 = ${currentSize * 0.8 + 0.2} - pause"
                         )

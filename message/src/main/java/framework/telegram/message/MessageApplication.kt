@@ -42,13 +42,6 @@ class MessageApplication {
         fun init(context: Context) {
             MessageApplication.context = context.applicationContext
 
-            if (framework.telegram.support.BuildConfig.IS_LAB_MODEL) {
-                Constant.Common.FIRST_LOAD_MESSAGE_HISTORY_COUNT = 50
-                Constant.Common.SHOW_RECEIPT_MAX_GROUP_MEMBER_COUNT = 5
-                Constant.Common.SHOW_RECEIPT_MAX_GROUP_MESSAGE_COUNT = 5
-                Constant.Common.AUTO_CLEAR_MESSAGE_MAX_TIME = 60 * 60 * 1000
-            }
-
             registerBus()
 
             // 查询所有消息状态，并进行状态重置

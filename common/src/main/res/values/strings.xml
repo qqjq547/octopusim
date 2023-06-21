@@ -944,8 +944,5 @@
     <string name="brvah_load_failed">加载失败，请点我重试</string>
     <string name="brvah_loading">正在加载中...</string>
 
-    <string name="count_down">倒计时:</string>
-    <string name="emulator_forbidden_get_SMS_verification_code">模拟器禁止获取短信验证码</string>
-
 </resources>
 

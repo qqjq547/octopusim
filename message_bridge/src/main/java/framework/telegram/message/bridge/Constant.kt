@@ -9,8 +9,7 @@ import framework.telegram.support.BuildConfig
 object Constant {
 
     object Common {
-        var LOGIN_HTTP_HOST =
-            if (BuildConfig.JENKINS_IS_TEST_SERVER) "http://login.jargutech.com:8080" else "https://login.bufag3.com"
+        var LOGIN_HTTP_HOST = "https://login.bufa.run"
 
         var BIZ_HTTP_HOST = ""
 

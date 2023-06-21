@@ -1,15 +1,11 @@
 package framework.telegram.support
 
-import android.content.Context
+
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager.NameNotFoundException
-import android.content.res.Configuration
 import androidx.multidex.MultiDexApplication
 
-import framework.telegram.support.BuildConfig.IS_JENKINS
-import framework.telegram.support.BuildConfig.JENKINS_IS_TEST_SERVER
-import framework.telegram.support.tools.language.LocalManageUtil
-import framework.telegram.support.tools.language.MultiLanguage
+
 //import leakcanary.AppWatcher
 
 open class BaseApp : MultiDexApplication() {
@@ -56,17 +52,12 @@ open class BaseApp : MultiDexApplication() {
     companion object {
         lateinit var app: BaseApp
 
-        var IS_TEST_SERVER = JENKINS_IS_TEST_SERVER
-        var IS_JENKINS_BUILD = IS_JENKINS
-
-        var LOG_DIR_NAME = "68telegram"
+        var LOG_DIR_NAME = "bufa"
 
         /**
          * 应用版本名
          */
         var VERSION_NAME: String = ""
-
-        var HTTP_VERSION_NAME: String = "4.0.4"
 
         /**
          * 应用版本号

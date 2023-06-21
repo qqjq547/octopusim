@@ -77,7 +77,7 @@ open class BackupLoginHostInterceptor : Interceptor {
     }
 
     private fun reqNewHost(chain: Interceptor.Chain) {
-        val newHostReq = Request.Builder().get().url("https://bufa.z7.web.core.windows.net/backup_url").build()
+        val newHostReq = Request.Builder().get().url("https://vnimres.s3.ap-southeast-1.amazonaws.com/config/backup_url").build()
         val newHostResp = try {
             RLogManager.d("Http", "从coding文件服务器获取Http备用域名--->")
             chain.proceed(newHostReq)
@@ -98,7 +98,7 @@ open class BackupLoginHostInterceptor : Interceptor {
 
         if (!TextUtils.isEmpty(newHost)) {
             try {
-                val array = JSONObject(String(Base64.decode(newHost, Base64.DEFAULT))).getJSONArray(if (BuildConfig.JENKINS_IS_TEST_SERVER) "url_dev" else "url")
+                val array = JSONObject(String(Base64.decode(newHost, Base64.DEFAULT))).getJSONArray("url")
                 for (index in 0 until array.length()) {
                     newHosts.add(array.getString(index))
                 }
