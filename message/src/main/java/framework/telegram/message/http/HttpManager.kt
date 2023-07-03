@@ -97,7 +97,7 @@ fun getClientInfo(): CommonProto.ClientInfo {
     return CommonProto.ClientInfo.newBuilder()
             .setPlat(CommonProto.Platform.ANDROID)
             .setLanguage(getAppLanguage())
-            .setAppVer(BaseApp.VERSION_CODE)
+            .setAppVer(1000)
             .setPackageCode(BaseApp.app.getPackageChannel().channelCode)
             .setSessionId(accountInfo.getSessionId())
             .build()
@@ -107,7 +107,7 @@ fun getClientInfoWithOutSessionId(): CommonProto.ClientInfo {
     return CommonProto.ClientInfo.newBuilder()
             .setPlat(CommonProto.Platform.ANDROID)
             .setLanguage(getAppLanguage())
-            .setAppVer(BaseApp.VERSION_CODE)
+            .setAppVer(1000)
             .setPackageCode(BaseApp.app.getPackageChannel().channelCode)
             .build()
 }
