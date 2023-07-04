@@ -336,7 +336,7 @@ class RegisterActivity : BaseBusinessActivity<RegisterContract.Presenter>(), Reg
         if ("+86" == mCountyStr) {
             edit_text_phone.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(11))
         } else if ("+84" == mCountyStr) {
-            edit_text_phone.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(9))
+            edit_text_phone.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(11))
         } else {
             edit_text_phone.filters = arrayOf<InputFilter>()
         }

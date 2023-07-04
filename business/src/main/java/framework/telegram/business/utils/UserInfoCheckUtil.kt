@@ -113,7 +113,7 @@ object UserInfoCheckUtil {
                 return true
             }
         } else if ("+84" == countyCode) {
-            if (phoneNumber.length == 9) {
+            if (phoneNumber.length >= 9) {
                 return true
             }
         } else {

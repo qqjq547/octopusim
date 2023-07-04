@@ -44,7 +44,7 @@ class CreateGroupNoticeActivity : BaseActivity() {
         }
         custom_toolbar.showCenterTitle(getString(R.string.issue_new_announcements))
 
-        tv_num.text = "0/500"
+        tv_num.text = "0/800"
         et_content.addTextChangedListener(MyTextWatcher(et_content, tv_num, btn_confirm))
         switch_button.isChecked = false
 
